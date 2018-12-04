@@ -65,7 +65,20 @@ public final class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 Log.d(TAG, "Start API button clicked");
-                startAPICall();
+
+                Thread thread = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try  {
+                            startAPICall();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                thread.start();
     //            startAPICall2();
             }
         });
@@ -86,7 +99,9 @@ public final class MainActivity extends AppCompatActivity {
             Apikey.setApiKey("a3be09fc-e90b-4ff5-b0f1-94682b613a86");
 
             ConvertDocumentApi apiInstance = new ConvertDocumentApi();
-            File inputFile = new File("C:\\Users\\VIVEKG~1\\AppData\\Local\\Temp\\output-3478612807235997346.pdf"); // File | Input file to perform the operation on.
+
+            File inputFile = new File("/storage/emulated/0/Download/vivekg2.pdf"); // File | Input file to perform the operation on.
+//            inputFile = inputFile.getAbsoluteFile();
             try {
                 System.out.println(inputFile);
                 Object result = apiInstance.convertDocumentPdfToPngArray(inputFile);
@@ -97,7 +112,7 @@ public final class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         } catch (Exception e) {
-            System.out.println("Error:" + e.toString() + e.getMessage() );
+            System.out.println("Error: " + e.toString() + e.getMessage());
         }
     }
 
